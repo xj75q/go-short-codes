@@ -1,6 +1,19 @@
 package main
 
 //简单工厂模式
+/*
+又叫 静态工厂方法 模式。但不属于23种GOF设计模式之一。在简单工厂模式种，可以根据参数的不同返回不同类的实例。
+简单工厂模式专门定义一个类来负责创建其他类的实例，被创建的实例通常都具有共同的父类。
+简单工厂模式的实质是由一个工厂类根据传入的参数，动态决定应该创建哪一个产品类的实例。
+*/
+
+/*
+步骤总结：
+1> 实现一个抽象的产品类
+2> 实现具体的产品（产品1）
+3> 实现具体的产品（产品2）
+4> 实现简单工厂类
+*/
 
 type Product interface {
 	SetName(name string)
@@ -40,6 +53,7 @@ const (
 	p2
 )
 
+// 实现简单工厂类
 type productFactory struct {
 }
 
@@ -53,6 +67,8 @@ func (pf productFactory) Create(proctType ProctType) Product {
 	return nil
 }
 
+/*
+ */
 func main() {
 
 }
