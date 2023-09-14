@@ -36,6 +36,7 @@ func (a *App) initializeRoutes() {
 func (a *App) createShortlink(w http.ResponseWriter, r *http.Request) {
 	var req shotenReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		respondWithError(w, StatusError{http.StatusBadRequest, fmt.Errorf("parse parmeters failed")}.Err)
 		return
 	}
 
@@ -60,10 +61,19 @@ func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
 
-func main() {
-	a := &App{}
-	fmt.Println("&&&&&")
-	a.Initialize()
-	a.Run(":8000")
-	fmt.Println("^^^^")
+func respondWithError(w http.ResponseWriter, err error) {
+	switch e := err.(type) {
+	case Error:
+		log.Printf("HTTP %d - %s", e.Status(), e)
+
+	default:
+		respondWithJson(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+	}
+}
+
+func respondWithJson(w http.ResponseWriter, code int, paylod interface{}) {
+	resp, _ := json.Marshal(paylod)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(resp)
 }
