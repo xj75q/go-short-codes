@@ -2,6 +2,10 @@ package demo_3
 
 import "fmt"
 
+/*
+装饰者模式可以动态地给对象添加一些额外的属性或行为，即需要修改原有的功能，但又不愿直接去修改原有的代码时，设计一个Decorator套在原有代码外面。
+*/
+
 // 定义一个抽象的组件
 type Component interface {
 	Operate()
